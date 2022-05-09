@@ -29,12 +29,12 @@ Sing me a song is an API for anomalous music recommendation. The more people lik
 
 ### POST /recommendations
 
-``` jsx
+``` 
 POST /recommendations
 ```
 #### Expected Body
 
-``` jsx
+``` 
 {
   "name": String, required,
   "youtubeLink": String, must be a valid youtube link, required,
@@ -43,7 +43,7 @@ POST /recommendations
 
 #### Possible Response Status
 
-``` jsx
+``` 
 200: 'OK';
 400: 'The request body contains invalid elements';
 201: 'Successfully created!';
