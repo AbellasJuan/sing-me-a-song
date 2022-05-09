@@ -1,10 +1,9 @@
 import faker from "@faker-js/faker";
-import { array } from "joi";
-import YouTubePlayer from "react-player/youtube";
 import supertest from "supertest"
 import app from "../../src/app.js"
 import { prisma } from "../../src/database.js";
 import { createRecommendation, createRecommendationBody } from "../factory/recommendationsFactory.js";
+import {create, findAll} from "../utils/index.js";
 
 afterAll(() => {
   prisma.$disconnect();
@@ -63,8 +62,10 @@ describe('GET /recommendations/random', () => {
 describe("POST /recommendations", () => {
     it("should return 201 given a valid body", async () => {
         const body = createRecommendationBody();
-        const response = await supertest(app).post("/recommendations").send(body);
-        expect(response.status).toBe(201);
+        await create(body);
+        const allRecommendations = await findAll();
+        
+        expect(allRecommendations.length).toEqual(1);
     });
 
     it('should not create a new recommendation given an invalid body', async () => {
@@ -79,11 +80,12 @@ describe("POST /recommendations/:id/upvote", () => {
         const body = createRecommendationBody();
         await createRecommendation(body);
         
-		await supertest(app).post('/recommendations/1/upvote');
+		const computeUpvote = await supertest(app).post('/recommendations/1/upvote');
         
-        const response = await supertest(app).get('/recommendations');
-        expect(response.body[0].score).toEqual(1)
-		expect(response.status).toEqual(200);
+        const allRecommendations = await findAll();
+
+        expect(allRecommendations[0].score).toEqual(1)
+		expect(computeUpvote.status).toEqual(200);
 	});  
 
 });
@@ -93,11 +95,12 @@ describe("POST /recommendations/:id/downvote", () => {
         const body = createRecommendationBody();
         await createRecommendation(body);
         
-		await supertest(app).post('/recommendations/1/downvote');
+		const computeDownvote = await supertest(app).post('/recommendations/1/downvote');
         
-        const response = await supertest(app).get('/recommendations');
-        expect(response.body[0].score).toEqual(-1)
-		expect(response.status).toEqual(200);
+        const allRecommendations = await findAll();
+
+        expect(allRecommendations[0].score).toEqual(-1)
+		expect(computeDownvote.status).toEqual(200);
 	});  
 
     it('should remove recommendation if score less than -5', async () => {
@@ -105,9 +108,9 @@ describe("POST /recommendations/:id/downvote", () => {
         await createRecommendation(body);
         
         const response = await supertest(app).post('/recommendations/1/downvote');
-        const allRecommendations = await supertest(app).get('/recommendations');
+        const allRecommendations = await findAll();
         
-        expect(allRecommendations.body.length).toEqual(0)        
+        expect(allRecommendations.length).toEqual(0)        
 		expect(response.status).toEqual(200);
 	});  
 });
