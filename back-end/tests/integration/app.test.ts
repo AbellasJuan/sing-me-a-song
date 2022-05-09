@@ -27,9 +27,9 @@ describe("GET /recommendations", () => {
 
 describe('GET /recommendations/top/:amount', () => {
 	it('should return recommendations by amount', async () => {
-        let body = {...createRecommendationBody(), score: 100};
-        let body2 = {...createRecommendationBody(), score: 200}
-        let body3 = {...createRecommendationBody(), score: 300};;
+        const body = {...createRecommendationBody(), score: 100};
+        const body2 = {...createRecommendationBody(), score: 200}
+        const body3 = {...createRecommendationBody(), score: 300};;
         await createRecommendation(body);
         await createRecommendation(body2);
         await createRecommendation(body3);
@@ -89,7 +89,7 @@ describe("POST /recommendations/:id/upvote", () => {
 });
 
 describe("POST /recommendations/:id/downvote", () => {
-    it('should add 1 vote to the score', async () => {
+    it('should remove 1 vote to the score', async () => {
         const body = createRecommendationBody();
         await createRecommendation(body);
         
@@ -100,6 +100,16 @@ describe("POST /recommendations/:id/downvote", () => {
 		expect(response.status).toEqual(200);
 	});  
 
+    it('should remove recommendation if score less than -5', async () => {
+        const body = {...createRecommendationBody(), score: -5};
+        await createRecommendation(body);
+        
+        const response = await supertest(app).post('/recommendations/1/downvote');
+        const allRecommendations = await supertest(app).get('/recommendations');
+        
+        expect(allRecommendations.body.length).toEqual(0)        
+		expect(response.status).toEqual(200);
+	});  
 });
 
 //  it.todo(" post /:id/upvote Adiciona um ponto à pontuação da recomendação. Não espera nada no corpo.")
