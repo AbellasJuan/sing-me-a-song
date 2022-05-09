@@ -14,7 +14,7 @@
 
 Sing me a song is an API for anomalous music recommendation. The more people like a recommendation, the greater the chance that it will be recommended to others 🙂 .
 
-```
+---
 
 ## How It Works
 
@@ -25,7 +25,7 @@ POST /recommendations
 ```
 #### Expected Body
 
-``` 
+``` jsx
 {
   "name": String, required,
   "youtubeLink": String, must be a valid youtube link, required,
@@ -34,7 +34,7 @@ POST /recommendations
 
 #### Possible Response Status
 
-``` 
+``` jsx
 200: 'OK';
 400: 'The request body contains invalid elements';
 201: 'Successfully created!';
@@ -46,13 +46,13 @@ POST /recommendations
 
 ### POST /recommendations/:id/upvote
 
-``` 
+``` jsx
 POST /recommendations/:id/upvote
 ```
 
 #### Expected Body
 
-``` 
+``` jsx
 None
 ```
 
@@ -69,19 +69,19 @@ None
 
 ### POST /recommendations/:id/downvote
 
-``` 
+``` jsx
 POST /recommendations/:id/downvote
 ```
 
 #### Expected Body
 
-``` 
+``` jsx
 None
 ```
 
 #### Possible Response Status
 
-``` 
+``` jsx
 400: 'Id is invalid';
 200: 'Successfully updated! -1';
 404: 'Recommendation not found';
@@ -179,13 +179,12 @@ The following tools were used in the construction of the project-api:
 -   **[DotENV](https://github.com/motdotla/dotenv)**
 -   **[Joi](https://github.com/hapijs/joi)**
 -   **[Jest](https://github.com/facebook/jest)**
--   **And others...
+-   **And others...**
 
 **Utilitários**
 
 -   Editor:  **[Visual Studio Code](https://code.visualstudio.com/)**
 -   API Test:  **[Insomnia](https://insomnia.rest/)**
-
 ---
 
 ## How to contribute
