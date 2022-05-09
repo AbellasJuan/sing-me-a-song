@@ -1,4 +1,6 @@
 import faker from "@faker-js/faker";
+import { array } from "joi";
+import YouTubePlayer from "react-player/youtube";
 import supertest from "supertest"
 import app from "../../src/app.js"
 import { prisma } from "../../src/database.js";
@@ -23,7 +25,22 @@ describe("GET /recommendations", () => {
 
 });
 
-    it.todo(" get /top/:amount")
+describe('GET /recommendations/top/:amount', () => {
+	it('should return recommendations by amount', async () => {
+        let body = {...createRecommendationBody(), score: 100};
+        let body2 = {...createRecommendationBody(), score: 200}
+        let body3 = {...createRecommendationBody(), score: 300};;
+        await createRecommendation(body);
+        await createRecommendation(body2);
+        await createRecommendation(body3);
+
+        const amount = faker.finance.amount(1, 3, 0)
+		const response = await supertest(app).get(`/recommendations/top/${amount}`);
+
+		expect(response.status).toEqual(200);
+	});
+});
+
     it.todo(" get /:id Pega uma recomendação pelo seu ID. ")
 
 describe('GET /recommendations/random', () => {
@@ -34,9 +51,12 @@ describe('GET /recommendations/random', () => {
         await createRecommendation(body2);
 		const response = await supertest(app).get('/recommendations/random');
 
-        console.log(response.body)
-
 		expect(response.status).toEqual(200);
+	});
+
+    it('should 404 without data', async () => {
+		const response = await supertest(app).get('/recommendations/random');
+		expect(response.status).toEqual(404);
 	});
 });
 
