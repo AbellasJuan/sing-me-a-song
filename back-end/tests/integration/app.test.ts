@@ -71,10 +71,37 @@ describe("POST /recommendations", () => {
 		const body = {};
 		const response = await supertest(app).post('/recommendations').send(body);
 		expect(response.status).toEqual(422);
-	});
-
-    it.todo(" post /:id/upvote Adiciona um ponto à pontuação da recomendação. Não espera nada no corpo.")
-
-    it.todo(" post /:id/downvote - Remove um ponto da pontuação da recomendação. Não espera nada no corpo. - Se a pontuação fica abaixo de -5, a recomendação deve ser excluída.")
-    
+	});    
 });
+
+describe("POST /recommendations/:id/upvote", () => {
+    it('should add 1 vote to the score', async () => {
+        const body = createRecommendationBody();
+        await createRecommendation(body);
+        
+		await supertest(app).post('/recommendations/1/upvote');
+        
+        const response = await supertest(app).get('/recommendations');
+        expect(response.body[0].score).toEqual(1)
+		expect(response.status).toEqual(200);
+	});  
+
+});
+
+describe("POST /recommendations/:id/downvote", () => {
+    it('should add 1 vote to the score', async () => {
+        const body = createRecommendationBody();
+        await createRecommendation(body);
+        
+		await supertest(app).post('/recommendations/1/downvote');
+        
+        const response = await supertest(app).get('/recommendations');
+        expect(response.body[0].score).toEqual(-1)
+		expect(response.status).toEqual(200);
+	});  
+
+});
+
+//  it.todo(" post /:id/upvote Adiciona um ponto à pontuação da recomendação. Não espera nada no corpo.")
+
+    // it.todo(" post /:id/downvote - Remove um ponto da pontuação da recomendação. Não espera nada no corpo. - Se a pontuação fica abaixo de -5, a recomendação deve ser excluída.")
