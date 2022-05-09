@@ -69,11 +69,33 @@ describe("POST /recommendations", () => {
         expect(allRecommendations.length).toBe(1)
     });
 
-    it('should not create a new recommendation given an invalid body', async () => {
+    it('should not create a new recommendation given an empity body', async () => {
 		const body = {};
 		const response = await supertest(app).post('/recommendations').send(body);
 		expect(response.status).toEqual(422);
 	});    
+
+    it("should answer 422, when missing name", async () => {
+    const body = createRecommendationBody();
+
+    delete body.name;
+
+    console.log(body)
+
+    const response = await supertest(app).post("/recommendations").send(body);
+    expect(response.status).toBe(422);
+    });
+
+    it("should answer 422, when missing youtubeLink", async () => {
+    const body = createRecommendationBody();
+
+    delete body.youtubeLink;
+
+    console.log(body)
+
+    const response = await supertest(app).post("/recommendations").send(body);
+    expect(response.status).toBe(422);
+    });
 });
 
 describe("POST /recommendations/:id/upvote", () => {
