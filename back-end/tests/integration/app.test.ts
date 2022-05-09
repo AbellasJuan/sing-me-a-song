@@ -15,17 +15,19 @@ beforeEach(async () => {
 
 describe("GET /recommendations", () => {
         
-    it("should return all recommendations", async () => {
+    it("should return 200 and persist recommendation", async () => {
         const body = createRecommendationBody();
         await create(body);
-        const response = await supertest(app).get("/recommendations");           
+        const response = await supertest(app).get("/recommendations");
+
+        expect(response.body.length).toBe(1);           
         expect(response.status).toBe(200);
     });
 
 });
 
 describe('GET /recommendations/top/:amount', () => {
-	it('should return recommendations by amount', async () => {
+	it('should return 200 and recommendations ordered by amount', async () => {
         const body = {...createRecommendationBody(), score: 100};
         const body2 = {...createRecommendationBody(), score: 200}
         const body3 = {...createRecommendationBody(), score: 300};;
@@ -41,7 +43,7 @@ describe('GET /recommendations/top/:amount', () => {
 });
 
 describe('GET /recommendations/:id', () => {
-	it('should answer 200, when have an id ', async () => {
+	it('should answer 200 and return a especific recommendation given a id ', async () => {
         const body = createRecommendationBody();
         const body2 = createRecommendationBody();
         await createRecommendation(body);
@@ -51,7 +53,7 @@ describe('GET /recommendations/:id', () => {
 		expect(response.status).toEqual(200);
 	});
 
-    it('should 404 without valid id', async () => {
+    it('should answer 404 given invalid id', async () => {
         const id = 0;
 		const response = await supertest(app).get(`/recommendations/${id}`);
 		expect(response.status).toEqual(404);
@@ -59,7 +61,7 @@ describe('GET /recommendations/:id', () => {
 });
 
 describe("POST /recommendations", () => {
-    it("should return 201 given a valid body", async () => {
+    it("should answer 201 given a valid body", async () => {
         const body = createRecommendationBody();
         const created = await supertest(app).post("/recommendations").send(body);
         const allRecommendations = await findAll();
@@ -75,7 +77,7 @@ describe("POST /recommendations", () => {
 });
 
 describe("POST /recommendations/:id/upvote", () => {
-    it('should add 1 vote to the score', async () => {
+    it('should answer 200 and add 1 vote to the score', async () => {
         const body = createRecommendationBody();
         await createRecommendation(body);
         
@@ -90,7 +92,7 @@ describe("POST /recommendations/:id/upvote", () => {
 });
 
 describe("POST /recommendations/:id/downvote", () => {
-    it('should remove 1 vote to the score', async () => {
+    it('should answer 200 and remove 1 vote to the score', async () => {
         const body = createRecommendationBody();
         await createRecommendation(body);
         
@@ -102,7 +104,7 @@ describe("POST /recommendations/:id/downvote", () => {
 		expect(computeDownvote.status).toEqual(200);
 	});  
 
-    it('should remove recommendation if score less than -5', async () => {
+    it('should answer 200 and remove recommendation if score less than -5', async () => {
         const body = {...createRecommendationBody(), score: -5};
         await createRecommendation(body);
         
