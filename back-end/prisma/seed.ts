@@ -3,6 +3,8 @@ import { prisma } from "../src/database.js"
 
 async function main(){
 
+    if(1 === 1) return;
+
     await prisma.recommendation.createMany({
         data: 
         [
@@ -11,7 +13,7 @@ async function main(){
                 youtubeLink: "https://www.youtube.com/watch?v=LvR0PFX9siI",
             },
             {
-                name: "vai dar namoro",
+                name: "casimiro",
                 youtubeLink: "https://www.youtube.com/watch?v=Qdg7QC1sFbA",
                 score: 23,
             }
