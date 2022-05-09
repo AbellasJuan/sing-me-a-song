@@ -10,15 +10,6 @@
 	 Status: Doing...
 </h4>
 
-<p align="center">
- <a href="#about">About</a> •
- <a href="#how-it-works">How It Works</a> • 
- <a href="#pre-requisites">Pre-requisites</a> • 
- <a href="#tech-stack">Tech Stack</a> • 
- <a href="#how-to-contribute">How to contribute</a> • 
-</p>
-
-
 ## About
 
 Sing me a song is an API for anomalous music recommendation. The more people like a recommendation, the greater the chance that it will be recommended to others 🙂 .
@@ -55,13 +46,13 @@ POST /recommendations
 
 ### POST /recommendations/:id/upvote
 
-``` jsx
+``` 
 POST /recommendations/:id/upvote
 ```
 
 #### Expected Body
 
-``` jsx
+``` 
 None
 ```
 
@@ -78,19 +69,19 @@ None
 
 ### POST /recommendations/:id/downvote
 
-``` jsx
+``` 
 POST /recommendations/:id/downvote
 ```
 
 #### Expected Body
 
-``` jsx
+``` 
 None
 ```
 
 #### Possible Response Status
 
-``` jsx
+``` 
 400: 'Id is invalid';
 200: 'Successfully updated! -1';
 404: 'Recommendation not found';
@@ -101,13 +92,13 @@ None
 
 ### GET recommendations/random
 
-``` jsx
+``` 
 GET recommendations/random
 ```
 
 #### Possible Response Status
 
-``` jsx
+``` 
 400: 'Id is invalid';
 200: 'Object with expected body'
 404: 'No recommendations yet';
@@ -124,7 +115,7 @@ GET recommendations/top/:amount
 
 #### Expect to receive
 
-``` jsx
+``` 
 [
   {
     "id": 1,
@@ -149,7 +140,7 @@ GET recommendations/top/:amount
 
 #### Possible Response Status
 
-``` jsx
+``` 
 400: 'Invalid amount';
 200: 'Object with expected body'
 404: 'No recommendations yet';
@@ -164,7 +155,7 @@ Before you begin, you will need to have the following tools installed on your ma
 
 ### Running the Backend (server)
 
-``` jsx
+``` 
 
 // Install the dependencies
 $ npm install
