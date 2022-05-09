@@ -5,7 +5,7 @@ import { CreateRecommendationData } from "../../src/services/recommendationsServ
 export function createRecommendationBody(){
   return {
     name: faker.random.words(6),
-    youtubeLink: "https://www.youtube.com/watch?v=LvR0PFX9siI"
+    youtubeLink: `https://www.youtube.com/watch?v=LvR0PFX9si${faker.random.alphaNumeric(5)}`
   };
 };
 

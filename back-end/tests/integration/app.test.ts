@@ -1,7 +1,8 @@
+import faker from "@faker-js/faker";
 import supertest from "supertest"
 import app from "../../src/app.js"
 import { prisma } from "../../src/database.js";
-import { createRecommendationBody } from "../factory/recommendationsFactory.js";
+import { createRecommendation, createRecommendationBody } from "../factory/recommendationsFactory.js";
 
 afterAll(() => {
   prisma.$disconnect();
@@ -20,14 +21,26 @@ describe("GET /recommendations", () => {
         expect(response.status).toBe(200);
     });
 
-    it.todo(" get /random")
+});
+
     it.todo(" get /top/:amount")
     it.todo(" get /:id Pega uma recomendação pelo seu ID. ")
-    
+
+describe('GET /recommendations/random', () => {
+	it('should return a random recommendation', async () => {
+        const body = createRecommendationBody();
+        const body2 = createRecommendationBody();
+        await createRecommendation(body);
+        await createRecommendation(body2);
+		const response = await supertest(app).get('/recommendations/random');
+
+        console.log(response.body)
+
+		expect(response.status).toEqual(200);
+	});
 });
 
 describe("POST /recommendations", () => {
-    
     it("should return 201 given a valid body", async () => {
         const body = createRecommendationBody();
         const response = await supertest(app).post("/recommendations").send(body);
