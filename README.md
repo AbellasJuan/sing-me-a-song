@@ -6,10 +6,6 @@
     Have you ever asked someone for a music recommendation? 
 </h3>
 
-<h4 align="center"> 
-	 Status: Doing...
-</h4>
-
 ## About
 
 Sing me a song is an API for anomalous music recommendation. The more people like a recommendation, the greater the chance that it will be recommended to others 🙂 .
